@@ -2,7 +2,7 @@ import ax, { AxiosError } from "axios";
 import { getSession, signOut } from "next-auth/react";
 
 const axios = ax.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8080",
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   headers: {
     post: {
       "Content-Type": "application/json",
