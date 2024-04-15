@@ -26,7 +26,7 @@ export default function WalletPage() {
   const { data: wallets } = useWallets(undefined, refetchIntervalFn);
 
   useEffect(() => {
-    if (wallets && wallets.data.wallets.length > 0) {
+    if (wallets && wallets.data?.wallets?.length > 0) {
       // redirect to the first wallet
       const firstWallet = wallets.data.wallets[0];
       const walletId = firstWallet.id;

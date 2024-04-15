@@ -4,6 +4,8 @@ import { W3SSdk } from "@circle-fin/w3s-pw-web-sdk";
 import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useState } from "react";
 
+const appId = process.env.NEXT_PUBLIC_APP_ID ?? '';
+
 /**
  * Context State.
  */
@@ -30,7 +32,6 @@ export interface W3sProviderProps {
  * W3s Provider.
  */
 export const W3sProvider: React.FC<W3sProviderProps> = ({ children }) => {
-  const appId = process.env.NEXT_PUBLIC_APP_ID || "";
   const [client, setClient] = useState<W3SSdk | undefined>(undefined);
   const { data: session } = useSession();
 
@@ -62,7 +63,7 @@ export const W3sProvider: React.FC<W3sProviderProps> = ({ children }) => {
       });
       setClient(webClient);
     }
-  }, [appId, client]);
+  }, [client]);
 
   useEffect(() => {
     // When the session or clients updated
