@@ -6,7 +6,7 @@ import {
 } from "@/app/axios";
 import { LoadingWrapper } from "@/app/components";
 import Image from "next/image";
-import { Chip, List, ListItem, ListItemButton, Typography } from "@mui/joy";
+import { Chip, List, ListItem, ListItemButton, Typography, Divider } from "@mui/joy";
 import { Transaction } from "../shared/types";
 import { useRouter } from "next/navigation";
 import { MegaphoneIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
@@ -20,13 +20,14 @@ interface WalletActivityProps {
 export const WalletActivity: React.FC<WalletActivityProps> = ({ id }) => {
   const { data: transactions, isLoading } = useTransactionsQuery(id);
   const { data: wallet } = useWallet(id);
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   if (!isLoading && transactions?.length === 0) {
     return (
       <>
         <Image
           alt="no tokens"
-          src="/NoActivity.svg"
+          src={`${basePath}/NoActivity.svg`}
           height={80}
           width={80}
           className="mx-auto mt-4 mb-6"
@@ -45,13 +46,15 @@ export const WalletActivity: React.FC<WalletActivityProps> = ({ id }) => {
     <LoadingWrapper isLoading={isLoading}>
       {transactions?.length && (
         <List className="py-0">
-          {transactions?.map((transaction: Transaction) => (
-            <TransactionRow
-              transaction={transaction}
-              walletId={id}
-              walletAddress={wallet?.data.wallet.address ?? ""}
-              key={transaction.id}
-            />
+          {transactions?.map((transaction: Transaction, index: number) => (
+            <div key={transaction.id}>
+              <TransactionRow
+                transaction={transaction}
+                walletId={id}
+                walletAddress={wallet?.data.wallet.address ?? ""}
+              />
+              {index !== transactions.length-1 && <Divider orientation="horizontal" />}
+            </div>
           ))}
         </List>
       )}

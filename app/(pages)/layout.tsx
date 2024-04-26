@@ -22,12 +22,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const queryClient = new QueryClient();
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   return (
     <html lang="en">
       <body className={inter.className}>
         <div id="__next">
-          <SessionProvider>
+          <SessionProvider basePath={`${basePath}/api/auth`}>
             <QueryClientProvider client={queryClient}>
               <W3sProvider>
                 <ThemeRegistry options={{ key: "joy" }}>
@@ -35,7 +36,7 @@ export default function RootLayout({
                     <div className="max-w-xl w-full h-full max-h-[660px] border border-solid border-gray-200 rounded-lg shadow-lg flex flex-col relative overflow-hidden">
                       <span className="bg-purple-500 text-white p-3 font-medium flex items-center gap-x-2.5">
                         <Image
-                          src="/CircleLogo.svg"
+                          src={`${basePath}/CircleLogo.svg`}
                           alt="Circle Logo"
                           width={20}
                           height={20}
