@@ -22,6 +22,7 @@ Run `yarn env:config`, and you will see a `.env.local` file generated in the roo
 - `NEXT_PUBLIC_APP_ID`: your App ID on Circle's Dev Console.
 - `NEXT_PUBLIC_BASE_URL`: your backend server url.
 - `NEXTAUTH_SECRET`: generate with `openssl rand -base64 32`.
+- `NEXT_PUBLIC_BASE_PATH`: the base path for the application. Defaulted to `/pw-user-controlled/foundational`.
 
 ## Get Started
 
@@ -42,8 +43,8 @@ yarn dev
 ## Additional Resources
 
 - Sample App
-  - Backend Repo: <TODO: link to public be repo>
-  - Live Demo: <TODO: link to hosted sample app>
+  - [Backend Repo](https://github.com/circlefin/w3s-sample-user-controlled-server-node)
+  - [Live Demo](http://sample-app.circle.com/pw-user-controlled/foundational)
   - Walkthrough Video: <TODO: link to video>
   
 - [Circle Web3 Services Web SDK](https://developers.circle.com/w3s/docs/web-sdk-ui-customizations) supports UI customization, check [more examples](https://github.com/circlefin/w3s-pw-web-sdk).
@@ -51,7 +52,3 @@ yarn dev
 - We use [Next.js](https://nextjs.org/) as [React](https://react.dev/) framework and [Joy UI](https://mui.com/joy-ui/getting-started/) as React component library.
 - Need help: <customer-support@circle.com>
 - Join our Discord community: <https://discord.com/invite/buildoncircle>
-
-## Circle Internal
-
-- In the 1Password "Web3 Services" Vault, copy and paste the value of `APP_ID` from "Sample Apps Prod" account in `.env`.
