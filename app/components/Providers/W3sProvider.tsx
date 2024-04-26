@@ -4,7 +4,7 @@ import { W3SSdk } from "@circle-fin/w3s-pw-web-sdk";
 import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useState } from "react";
 
-const appId = process.env.NEXT_PUBLIC_APP_ID ?? '';
+const appId = process.env.NEXT_PUBLIC_APP_ID ?? "";
 
 /**
  * Context State.
@@ -55,7 +55,7 @@ export const W3sProvider: React.FC<W3sProviderProps> = ({ children }) => {
       });
       webClient?.setOnForgotPin(async () => {
         const response = await axios.post<{ challengeId: string }>(
-          "/users/pin/restore"
+          "/users/pin/restore",
         );
         if (response.data) {
           webClient.execute(response.data.challengeId);

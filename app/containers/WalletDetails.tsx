@@ -33,6 +33,7 @@ export const WalletDetails: React.FC<WalletDetailsProps> = ({ id }) => {
 
   const nativeTokenInfo = tokenHelper(mainBalance?.token.name);
   const blockchainInfo = blockchainMeta(walletData?.data.wallet.blockchain);
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   return (
     <>
@@ -86,7 +87,7 @@ export const WalletDetails: React.FC<WalletDetailsProps> = ({ id }) => {
                   <>
                     <Image
                       alt="no tokens"
-                      src="/NoTokens.svg"
+                      src={`${basePath}/NoTokens.svg`}
                       height={120}
                       width={120}
                       className="mx-auto"

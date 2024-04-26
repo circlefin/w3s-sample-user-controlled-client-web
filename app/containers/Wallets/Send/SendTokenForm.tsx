@@ -39,7 +39,7 @@ export const SendTokenForm = () => {
   const token = tokenBalanceData?.data.tokenBalances[0];
 
   const FormInputs = yup.object().shape({
-    address: yup.string().required("Wallet Address required."),
+    address: yup.string().required("Wallet Address required"),
     amount: yup
       .string()
       .test("Check positive nonzero integer", function (val, ctx) {
@@ -48,7 +48,7 @@ export const SendTokenForm = () => {
           return num > 0
             ? true
             : ctx.createError({
-                message: "Enter a number that is larger than zero.",
+                message: "Enter a number that is larger than zero",
               });
         } else {
           return true;
@@ -60,13 +60,13 @@ export const SendTokenForm = () => {
           return num <= parseFloat(token.amount)
             ? true
             : ctx.createError({
-                message: "Cannot send more than the wallet balance.",
+                message: "Cannot send more than the wallet balance",
               });
         } else {
           return true;
         }
       })
-      .required("Amount required."),
+      .required("Amount required"),
   });
 
   type FormInputSchema = yup.InferType<typeof FormInputs>;

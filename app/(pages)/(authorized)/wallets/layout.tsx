@@ -1,4 +1,4 @@
-import { authOptions } from "@/app/shared/utils";
+import { authOptions, validOnboardStatus } from "@/app/shared/utils";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -8,8 +8,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
+  const isValidOnboardStatus = session ? await validOnboardStatus(session) : false;
 
-  if (!session) {
+  if (!session || !isValidOnboardStatus) {
     redirect("/signin");
   }
 

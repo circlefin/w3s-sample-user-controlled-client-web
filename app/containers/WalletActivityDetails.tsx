@@ -70,14 +70,14 @@ export const WalletActivityDetails: React.FC<WalletActivityDetailsProps> = ({
           <div className="grow">
               {operation == "Deposited" && 
                 <TextField
-                  value={transaction?.sourceAddress}
+                  value={transaction?.sourceAddress ?? ""}
                   label="From"
                   endDecorator={<CopyButton copyValue={transaction?.sourceAddress ?? ""} />}
                   readOnly
                 />
               }
               <TextField 
-                value={transaction?.destinationAddress} 
+                value={transaction?.destinationAddress ?? ""} 
                 label="To"
                 endDecorator={<CopyButton copyValue={transaction?.destinationAddress ?? ""} />}
                 readOnly
@@ -102,7 +102,7 @@ export const WalletActivityDetails: React.FC<WalletActivityDetailsProps> = ({
                 value={`${roundNum(transaction?.networkFee ?? "0", 8)} ${transaction?.blockchain}`}
               />
               <TextField 
-                value={transaction?.txHash} 
+                value={transaction?.txHash ?? ""} 
                 label="Transaction Hash"
                 endDecorator={<CopyButton copyValue={transaction?.txHash ?? ""} />}
               />
