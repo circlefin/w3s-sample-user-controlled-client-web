@@ -1,8 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // TODO: rework when i have existing session i still get directed to signin page
+  basePath: "/pw-user-controlled/foundational",
   async redirects() {
     return [
+      {
+        // if user visits sample-app.circle.com/ or /signin
+        // redirect to basePath
+        source: "/(signin)",
+        destination: "/pw-user-controlled/foundational",
+        permanent: true,
+        basePath: false,
+      },
       {
         source: "/",
         destination: "/signin",
