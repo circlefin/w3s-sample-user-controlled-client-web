@@ -20,7 +20,7 @@ Run `yarn env:config`, and you will see a `.env` file generated in the root dire
 
 ## Get Started
 
-Run the following commands to start the UI at `localhost:3000`:
+Run the following commands to start the UI at `localhost:3000/pw-user-controlled/foundational`:
 
 ``` bash
 nvm use
