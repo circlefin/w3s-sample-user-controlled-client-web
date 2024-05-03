@@ -8,7 +8,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
-  const isValidOnboardStatus = session ? await validOnboardStatus(session) : false;
+  const isValidOnboardStatus = session
+    ? await validOnboardStatus(session)
+    : false;
 
   if (!session || !isValidOnboardStatus) {
     redirect("/signin");

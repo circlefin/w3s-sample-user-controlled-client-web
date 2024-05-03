@@ -20,14 +20,13 @@ interface WalletActivityProps {
 export const WalletActivity: React.FC<WalletActivityProps> = ({ id }) => {
   const { data: transactions, isLoading } = useTransactionsQuery(id);
   const { data: wallet } = useWallet(id);
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
   if (!isLoading && transactions?.length === 0) {
     return (
       <>
         <Image
           alt="no tokens"
-          src={`${basePath}/NoActivity.svg`}
+          src={`/NoActivity.svg`}
           height={80}
           width={80}
           className="mx-auto mt-4 mb-6"

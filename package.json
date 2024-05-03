@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "env:config": "cp .env.sample .env && printf NEXTAUTH_SECRET=$(openssl rand -base64 32) >> .env",
-    "dev": "open http://localhost:3000/pw-user-controlled/foundational && next dev",
+    "dev": "open http://localhost:3000 && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

@@ -51,7 +51,7 @@ export default function WalletLayout({
             onClick={() =>
               signOut({
                 redirect: true,
-                callbackUrl: "/signin",
+                callbackUrl: process.env.NEXTAUTH_URL,
               })
             }
           >
