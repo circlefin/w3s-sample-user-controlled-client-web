@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/pw-user-controlled/foundational",
   async redirects() {
     return [
       {
