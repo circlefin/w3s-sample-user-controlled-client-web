@@ -20,15 +20,13 @@ export const SendTokenSummary: React.FC = () => {
   const imageSymbol = tokenHelper(tokenName);
   const router = useRouter();
   const date = useMemo(() => new Date(), []);
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-
   return (
     <>
       <Content>
         <div className="flex flex-col items-center mb-4">
           <Image
             className="mb-4"
-            src={`${basePath}/Success.gif`}
+            src={`/Success.gif`}
             width={80}
             height={80}
             alt="Success"

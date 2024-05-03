@@ -6,7 +6,9 @@ import { AuthenticationForm } from "@/app/components";
 
 export default async function SignupPage() {
   const session = await getServerSession(authOptions);
-  const isValidOnboardStatus = session ? await validOnboardStatus(session) : false;
+  const isValidOnboardStatus = session
+    ? await validOnboardStatus(session)
+    : false;
 
   if (session && isValidOnboardStatus) {
     redirect("/wallets");

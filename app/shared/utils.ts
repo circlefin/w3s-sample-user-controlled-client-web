@@ -1,9 +1,7 @@
 import { NextAuthOptions, Session, User } from "next-auth";
 import { axios } from "@/app/axios";
-import CredentialsProvider from "next-auth/providers/credentials";
 import { GasFeeObject, Transaction, TransactionStateEnum, TransactionTypeEnum } from "./types";
-
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 export const calculateSum = (amounts: string[]): string => {
   const finalSum = amounts.reduce((sum, amount) => Number(amount) + sum, 0);
@@ -57,11 +55,11 @@ export const blockchainIcon = (blockchain: string | undefined) => {
   switch (blockchain) {
     case "MATIC-AMOY":
     case "MATIC-MUMBAI":
-      return `${basePath}/Poly.svg`;
+      return `/Poly.svg`;
     case "ETH-SEPOLIA":
-      return `${basePath}/Eth.svg`;
+      return `/Eth.svg`;
     case "AVAX-FUJI":
-      return `${basePath}/Avax.svg`;
+      return `/Avax.svg`;
     default:
       return "";
   }
@@ -72,19 +70,19 @@ export const blockchainMeta = (blockchain: string | undefined) => {
   switch (blockchain) {
     case "MATIC-AMOY":
       return {
-        svg: `${basePath}/Poly.svg`,
+        svg: `/Poly.svg`,
         testnet: "Matic Amoy Testnet",
         nativeTokenName: "AmoyMATIC",
       };
     case "MATIC-MUMBAI":
       return {
-        svg: `${basePath}/Poly.svg`,
+        svg: `/Poly.svg`,
         testnet: "Matic Mumbai Testnet",
         nativeTokenName: "MumbaiMATIC",
       };
     case "ETH-SEPOLIA":
       return {
-        svg: `${basePath}/Eth.svg`,
+        svg: `/Eth.svg`,
         testnet: "Ethereum Sepolia Testnet",
         nativeTokenName: "SepoliaEth",
       };
@@ -97,32 +95,31 @@ export const blockchainMeta = (blockchain: string | undefined) => {
   }
 };
 
-// TODO: need to update these token helpers.
 export const tokenHelper = (tokenName: string | undefined) => {
   switch (tokenName) {
     case "Ethereum-Sepolia":
       return {
-        svg: `${basePath}/Eth.svg`,
+        svg: `/Eth.svg`,
         symbol: "ETH",
         name: "SepoliaETH",
       };
     case "Polygon-Amoy":
       return {
-        svg: `${basePath}/Poly.svg`,
+        svg: `/Poly.svg`,
         symbol: "MATIC-AMOY",
         name: "AmoyMATIC",
       };
     case "Polygon-Mumbai":
     case "Polygon":
       return {
-        svg: `${basePath}/Poly.svg`,
+        svg: `/Poly.svg`,
         symbol: "MATIC-MUMBAI",
         name: "MumbaiMATIC",
       };
     case "USD Coin":
     case "USDC":
       return {
-        svg: `${basePath}/USDC.svg`,
+        svg: `/USDC.svg`,
         symbol: "USDC",
         name: "USDC",
       };
@@ -168,7 +165,6 @@ export const validOnboardStatus = async (session: Session): Promise<boolean> => 
   }
 }
 
-// move to configs
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
@@ -212,7 +208,9 @@ export const authOptions: NextAuthOptions = {
         });
         if (userInfo) {
           if (userInfo.status === 201) {
-            throw Error("This email address has already been used, please sign in");
+            throw Error(
+              "This email address has already been used, please sign in",
+            );
           }
           // Any object returned will be saved in `user` property of the JWT
           const user = {
@@ -243,3 +241,4 @@ export const authOptions: NextAuthOptions = {
   },
   debug: process.env.NODE_ENV !== "production",
 };
+
