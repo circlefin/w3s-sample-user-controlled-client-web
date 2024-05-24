@@ -40,19 +40,19 @@ export default function RootLayout({
   const queryClient = new QueryClient();
 
   return (
-    <html lang="en">
+    <html lang='en'>
       <body className={inter.className}>
-        <div id="__next">
+        <div id='__next'>
           <SessionProvider>
             <QueryClientProvider client={queryClient}>
               <W3sProvider>
                 <ThemeRegistry options={{ key: "joy" }}>
-                  <div className="flex justify-center items-center h-screen px-4">
-                    <div className="max-w-xl w-full h-full max-h-[660px] border border-solid border-gray-200 rounded-lg shadow-lg flex flex-col relative overflow-hidden">
-                      <span className="bg-purple-500 text-white p-3 font-medium flex items-center gap-x-2.5">
+                  <div className='flex justify-center items-center h-screen px-4'>
+                    <div className='max-w-xl w-full h-full max-h-[660px] border border-solid border-gray-200 rounded-lg shadow-lg flex flex-col relative overflow-hidden'>
+                      <span className='bg-secondary text-white p-3 font-medium flex items-center gap-x-2.5'>
                         <Image
                           src={`/CircleLogo.svg`}
-                          alt="Circle Logo"
+                          alt='Circle Logo'
                           width={20}
                           height={20}
                         />{" "}

@@ -16,13 +16,13 @@
 
 "use client";
 import { useRouter } from "next/navigation";
-import { MegaphoneIcon } from "@heroicons/react/16/solid";
 import { useWallets } from "@/app/axios";
 import { useEffect, useState } from "react";
 import { LoadingWrapper } from "@/app/components";
 import { UseQueryOptions } from "react-query";
-import { Button } from "@mui/joy";
+import { Button, Typography } from "@mui/joy";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 
 export default function WalletPage() {
   const router = useRouter();
@@ -30,7 +30,7 @@ export default function WalletPage() {
 
   const refetchIntervalFn: UseQueryOptions["refetchInterval"] = (
     _data,
-    query
+    query,
   ) => {
     if (query.state.dataUpdateCount < 3) {
       return 2000;
@@ -51,13 +51,28 @@ export default function WalletPage() {
   }, [router, wallets]);
 
   return (
-    <div className="grid justify-center items-center h-1/2">
+    <div className='flex flex-col pt-16 text-center items-center h-1/2 px-6'>
       <LoadingWrapper isLoading={loading}>
-        <p>
-          No Wallets at this time <MegaphoneIcon />
-        </p>
+        <Image
+          src={"/ErrorIcon.svg"}
+          height={100}
+          width={100}
+          alt='No wallets'
+          className='mb-6'
+        />
 
-        <Button variant="outlined" onClick={() => signOut()}>
+        <Typography level='title-lg' className='text-neutral-400 mb-1.5'>
+          Something went wrong
+        </Typography>
+        <Typography
+          level='body-md'
+          fontWeight={500}
+          className='text-neutral-400 mb-6'
+        >
+          Sign out and restart the app to try again
+        </Typography>
+
+        <Button className='w-full' onClick={() => signOut()}>
           Sign out
         </Button>
       </LoadingWrapper>

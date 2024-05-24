@@ -68,59 +68,54 @@ export const SendTokenConfirm = () => {
           <BackButton onClick={() => setStep(1)}>Summary</BackButton>
         </nav>
 
-        <div className="flex flex-col items-center mb-4">
+        <div className='flex flex-col items-center mb-4'>
           <Image
-            className="mb-4"
+            className='mb-4'
             src={imageSymbol.svg}
             width={80}
             height={80}
-            alt="coin alt"
+            alt='coin alt'
           />
 
-          <span className="text-3xl text-center font-semibold max-w-80">
+          <span className='text-3xl text-center font-semibold max-w-80'>
             {tokenAndRecipient.amount} {imageSymbol.symbol}
           </span>
         </div>
 
         {/* Some table here for the amounts */}
-        <div className="grow">
-          <TextField 
-            value={tokenAndRecipient.address} 
-            label="To"
+        <div className='grow flex flex-col gap-y-2'>
+          <TextField
+            value={tokenAndRecipient.address}
+            label='To'
             endDecorator={<CopyButton copyValue={tokenAndRecipient.address} />}
             readOnly
           />
-          <TextField 
+          <TextField
             value={blockchainNames[tokenAndRecipient.network as BlockchainEnum]}
-            label="Network"
+            label='Network'
             readOnly
           />
-          <TextField 
-            readOnly 
+          <TextField
+            readOnly
             startDecorator={
-              <Chip
-                color="success"
-                size="md"
-                variant="solid"
-              >
+              <Chip color='success' size='md' variant='solid'>
                 Paid By Circle
               </Chip>
-            } 
-            label="Estimated Gas Fee"
+            }
+            label='Estimated Gas Fee'
             value={`${roundNum(String(calculateEstimatedFee(estimatedFee)), 8)} ${tokenAndRecipient.network}`}
           />
         </div>
-        <div className="flex gap-2">
-          <Button
-            className="w-full"
-            variant="solid"
-            onClick={handleSubmit}
-            loading={loading}
-            endDecorator={ <PaperAirplaneIcon width={16} /> }
-          >
-            Send
-          </Button>
-        </div>
+
+        <Button
+          className='w-full'
+          variant='solid'
+          onClick={handleSubmit}
+          loading={loading}
+          endDecorator={<PaperAirplaneIcon width={16} />}
+        >
+          Send
+        </Button>
       </Content>
     </>
   );
