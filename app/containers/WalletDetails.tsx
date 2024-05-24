@@ -42,9 +42,20 @@ export const WalletDetails: React.FC<WalletDetailsProps> = ({ id }) => {
       return;
     }
 
-    return balanceData.data.tokenBalances.find(
-      (balance) => balance.token.isNative
-    );
+    const sorted = balanceData.data.tokenBalances.sort((a, b) => {
+      // if native token with amount go first
+      if (a.token.isNative && parseFloat(a.amount) > 0) {
+        return -1;
+      }
+
+      if (parseFloat(a.amount) > parseFloat(b.amount)) {
+        return -1;
+      }
+
+      return 1;
+    });
+
+    return sorted[0];
   }, [balanceData?.data]);
 
   const nativeTokenInfo = tokenHelper(mainBalance?.token.name);
@@ -56,16 +67,16 @@ export const WalletDetails: React.FC<WalletDetailsProps> = ({ id }) => {
         <Content>
           {/* Token balance of the testnet main token?? */}
           <Typography
-            className="text-3xl text-center max-w-80 mx-auto"
+            className='text-3xl text-center max-w-80 mx-auto'
             fontWeight={700}
-            level="title-lg"
+            level='title-lg'
           >
             {mainBalance?.amount ?? "0"}{" "}
             {mainBalance
               ? nativeTokenInfo.name
               : blockchainInfo.nativeTokenName}
           </Typography>
-          <div className="flex flex-row justify-center gap-4 py-2">
+          <div className='flex flex-row justify-center gap-4 py-2'>
             <Button
               startDecorator={<ArrowDownIcon width={16} />}
               onClick={() => router.push(`/wallets/${id}/deposit`)}
@@ -83,13 +94,13 @@ export const WalletDetails: React.FC<WalletDetailsProps> = ({ id }) => {
             </Button>
           </div>
 
-          <Tabs className="bg-transparent">
-            <TabList className="grid grid-cols-2">
-              <Tab color="primary">Tokens</Tab>
-              <Tab color="primary">Activity</Tab>
+          <Tabs className='bg-transparent'>
+            <TabList className='grid grid-cols-2'>
+              <Tab color='primary'>Tokens</Tab>
+              <Tab color='primary'>Activity</Tab>
             </TabList>
-            <TabPanel value={0} className="px-0">
-              <div className="flex grow w-full flex-col gap-2">
+            <TabPanel value={0} className='px-0'>
+              <div className='flex grow w-full flex-col gap-2'>
                 {!isLoading &&
                   balanceData?.data.tokenBalances.map((token: TokenBalance) => (
                     <TokenCard
@@ -101,15 +112,15 @@ export const WalletDetails: React.FC<WalletDetailsProps> = ({ id }) => {
                 {!isLoading && balanceData?.data.tokenBalances.length === 0 && (
                   <>
                     <Image
-                      alt="no tokens"
+                      alt='no tokens'
                       src={`/NoTokens.svg`}
                       height={120}
                       width={120}
-                      className="mx-auto"
+                      className='mx-auto'
                     />
                     <Typography
-                      level="title-lg"
-                      className="text-center font-semibold text-gray-400"
+                      level='title-lg'
+                      className='text-center font-semibold text-gray-400'
                     >
                       No tokens yet
                     </Typography>
@@ -118,10 +129,8 @@ export const WalletDetails: React.FC<WalletDetailsProps> = ({ id }) => {
               </div>
             </TabPanel>
 
-            <TabPanel value={1}>
-              <div className="flex grow w-full flex-col gap-2">
-                <WalletActivity id={id} />
-              </div>
+            <TabPanel className='py-2 px-0' value={1}>
+              <WalletActivity id={id} />
             </TabPanel>
           </Tabs>
         </Content>

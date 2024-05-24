@@ -32,18 +32,18 @@ export interface TextFieldProps extends InputProps {
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   ({ label, helperText, ...props }, ref) => {
     return (
-      <FormControl id={props.id} error={props.error} className="w-full mb-2">
-        <FormLabel className="text-sm">{label}</FormLabel>
-        <Input className="text-lg" ref={ref} size="lg" {...props} />
+      <FormControl id={props.id} error={props.error} className='w-full'>
+        <FormLabel className='text-sm'>{label}</FormLabel>
+        <Input className='text-lg' ref={ref} size='lg' {...props} />
         <FormHelperText>
           {props.error && (
-            <InformationCircleIcon width={20} className="text-red" />
+            <InformationCircleIcon width={20} className='text-red' />
           )}
           {helperText}
         </FormHelperText>
       </FormControl>
     );
-  }
+  },
 );
 
 TextField.displayName = "TextField";
