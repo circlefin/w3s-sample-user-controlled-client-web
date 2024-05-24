@@ -116,28 +116,24 @@ export const AuthenticationForm: React.FC<AuthenticationFormProps> = ({
   };
   return (
     <Content>
-      <h1 className="text-center font-bold text-3xl pt-8">
+      <h1 className='text-center font-bold text-3xl my-2 pt-8'>
         {isSignIn ? "Sign In" : "Sign Up"}
       </h1>
 
-      {!isSignIn && (
-        <Typography className="text-center text-sm font-medium">{`Don't have an account?`}</Typography>
-      )}
-
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col grow">
-        <div className="grow space-y-4 mb-4">
+      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col'>
+        <div className='space-y-4'>
           <TextField
-            placeholder="Email"
-            type="email"
-            className="flex"
+            placeholder='Email'
+            type='email'
+            className='flex'
             error={!!formState.errors.email?.message}
             helperText={formState.errors.email?.message}
             {...register("email")}
           />
           <TextField
-            placeholder="Password"
+            placeholder='Password'
             type={isMasked ? "password" : "text"}
-            className="flex"
+            className='flex'
             error={!!formState.errors.password?.message}
             helperText={formState.errors.password?.message}
             endDecorator={
@@ -148,25 +144,25 @@ export const AuthenticationForm: React.FC<AuthenticationFormProps> = ({
             {...register("password")}
           />
           <Button
-            variant="solid"
-            className="w-full"
-            size="lg"
-            type="submit"
+            variant='solid'
+            className='w-full'
+            size='lg'
+            type='submit'
             loading={loading}
           >
             {isSignIn ? "Sign In" : "Sign Up"}
           </Button>
-          <p className="text-yellow-500">{formMessage ? formMessage : ""}</p>
+          <p className='text-yellow-500'>{formMessage ? formMessage : ""}</p>
         </div>
       </form>
 
-      <Typography className="text-center text-sm font-medium">
+      <Typography className='text-center text-sm font-medium'>
         {isSignIn ? "Don't have an account?" : "Already have an account?"}
       </Typography>
 
       <Button
-        variant="plain"
-        className="w-full"
+        variant='plain'
+        className='w-full'
         onClick={
           isSignIn ? () => router.push("/signup") : () => router.push("/signin")
         }
