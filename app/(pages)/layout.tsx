@@ -14,19 +14,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use client";
 import "../globals.css";
 
-import createCache from "@emotion/cache";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { W3sProvider } from "../components/Providers/W3sProvider";
-import { SessionProvider } from "next-auth/react";
 import Image from "next/image";
-import { CacheProvider } from "@emotion/react";
-import { CssVarsProvider, CssBaseline } from "@mui/joy";
-import { useServerInsertedHTML } from "next/navigation";
 import React from "react";
 import { Inter } from "next/font/google";
+import { Metadata } from "next";
+
+import { ClientProviders, Footer } from "@/app/components";
+import { Button, Typography } from "@mui/joy";
+import { BookOpenIcon } from "@heroicons/react/16/solid";
 
 const inter = Inter({
   subsets: ["cyrillic"],
@@ -37,93 +34,112 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const queryClient = new QueryClient();
-
   return (
     <html lang='en'>
       <body className={inter.className}>
         <div id='__next'>
-          <SessionProvider>
-            <QueryClientProvider client={queryClient}>
-              <W3sProvider>
-                <ThemeRegistry options={{ key: "joy" }}>
-                  <div className='flex justify-center items-center h-screen px-4'>
-                    <div className='max-w-xl w-full h-full max-h-[660px] border border-solid border-gray-200 rounded-lg shadow-lg flex flex-col relative overflow-hidden'>
-                      <span className='bg-secondary text-white p-3 font-medium flex items-center gap-x-2.5'>
+          <ClientProviders>
+            <div className='gradient-background'>
+              <div className='mx-auto max-w-7xl background-gradient h-screen flex flex-col lg:flex-row lg:gap-x-8 lg:items-start items-center lg:justify-between justify-center lg:px-8 lg:py-12'>
+                {/* Larger Screen Logo */}
+                <div className='lg:block hidden w-64'>
+                  <Image
+                    src={`/CircleLogoWithName.svg`}
+                    className='mr-4'
+                    alt='Circle Logo'
+                    width={140}
+                    height={36}
+                  />
+                  <Typography level='title-lg' className='mt-1'>
+                    User-Controlled Wallets
+                  </Typography>
+                </div>
+                <AppContainer>{children}</AppContainer>
+                {/* Larger Screen Source Code/Docs */}
+                <div className='lg:flex hidden w-64 gap-x-2'>
+                  <a
+                    href='https://github.com/circlefin/w3s-sample-user-controlled-client-web'
+                    target='_blank'
+                  >
+                    <Button
+                      variant='outlined'
+                      startDecorator={
                         <Image
-                          src={`/CircleLogo.svg`}
-                          alt='Circle Logo'
-                          width={20}
-                          height={20}
-                        />{" "}
-                        Your app here
-                      </span>
-                      {children}
-                    </div>
-                  </div>
-                </ThemeRegistry>
-              </W3sProvider>
-            </QueryClientProvider>
-          </SessionProvider>
+                          src={"/Github.svg"}
+                          height={16}
+                          width={16}
+                          alt='github'
+                        />
+                      }
+                    >
+                      Github
+                    </Button>
+                  </a>
+                  <a
+                    href='https://developers.circle.com/w3s/docs/sample-applications'
+                    target='_blank'
+                  >
+                    <Button
+                      variant='outlined'
+                      startDecorator={<BookOpenIcon width={16} />}
+                    >
+                      Docs
+                    </Button>
+                  </a>
+                </div>
+              </div>
+              <Footer />
+            </div>
+          </ClientProviders>
         </div>
       </body>
     </html>
   );
 }
 
-// copied from joy-ui docs.
-// https://mui.com/joy-ui/integrations/next-js-app-router/#using-joy-ui-with-the-app-router
+// Adds top banner/borders for
+const AppContainer = ({ children }: { children: React.ReactNode }) => (
+  <div className='w-full h-full lg:max-h-[660px] lg:max-w-lg lg:border lg:border-solid border-gray-200 lg:rounded-lg lg:shadow-lg flex flex-col relative overflow-hidden lg:mb-0 mb-20 bg-white'>
+    {/* banner for larger screens */}
+    <span className='lg:flex hidden bg-secondary text-white p-3 font-medium items-center gap-x-2.5'>
+      <Image src={`/CircleLogo.svg`} alt='Circle Logo' width={20} height={20} />{" "}
+      Your app here
+    </span>
+    {/* banner for smaller screens */}
+    <div className='lg:hidden p-4 flex justify-between items-center gradient-banner'>
+      <span className='flex items-center'>
+        <Image
+          src={`/CircleLogo.svg`}
+          alt='Circle Logo'
+          className='invert mr-2'
+          width={20}
+          height={20}
+        />
+        <Typography level='title-md' className='inline'>
+          User-Controlled Wallets
+        </Typography>
+      </span>
 
-function ThemeRegistry(props: any) {
-  const { options, children } = props;
+      <span className='flex gap-x-2'>
+        <a
+          href='https://github.com/circlefin/w3s-sample-user-controlled-client-web'
+          target='_blank'
+        >
+          <Button variant='outlined'>Github</Button>
+        </a>
+        <a
+          href='https://developers.circle.com/w3s/docs/sample-applications'
+          target='_blank'
+        >
+          <Button variant='outlined'>Docs</Button>
+        </a>
+      </span>
+    </div>
+    {children}
+  </div>
+);
 
-  const [{ cache, flush }] = React.useState(() => {
-    const cache = createCache(options);
-    cache.compat = true;
-    const prevInsert = cache.insert;
-    let inserted: string[] = [];
-    cache.insert = (...args) => {
-      const serialized = args[1];
-      if (cache.inserted[serialized.name] === undefined) {
-        inserted.push(serialized.name);
-      }
-      return prevInsert(...args);
-    };
-    const flush = () => {
-      const prevInserted = inserted;
-      inserted = [];
-      return prevInserted;
-    };
-    return { cache, flush };
-  });
-
-  useServerInsertedHTML(() => {
-    const names = flush();
-    if (names.length === 0) {
-      return null;
-    }
-    let styles = "";
-    for (const name of names) {
-      styles += cache.inserted[name];
-    }
-    return (
-      <style
-        key={cache.key}
-        data-emotion={`${cache.key} ${names.join(" ")}`}
-        dangerouslySetInnerHTML={{
-          __html: styles,
-        }}
-      />
-    );
-  });
-
-  return (
-    <CacheProvider value={cache}>
-      <CssVarsProvider>
-        {/* the custom theme is optional */}
-        <CssBaseline />
-        {children}
-      </CssVarsProvider>
-    </CacheProvider>
-  );
-}
+export const metadata: Metadata = {
+  title: "Programmable Wallet SDK Web Sample App",
+  description: "An example of how to use Circle's Programmable Wallet SDK",
+};

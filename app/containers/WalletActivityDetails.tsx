@@ -117,7 +117,7 @@ export const WalletActivityDetails: React.FC<WalletActivityDetailsProps> = ({
               value={`${roundNum(transaction?.networkFee ?? "0", 8)} ${transaction?.blockchain}`}
             />
             <TextField
-              value={transaction?.txHash ?? ""}
+              value={transaction?.txHash ?? "Not yet available"}
               label='Transaction Hash'
               endDecorator={
                 <CopyButton copyValue={transaction?.txHash ?? ""} />

@@ -12,3 +12,21 @@
     text-wrap: balance;
   }
 }
+
+.gradient-banner {
+  background: radial-gradient(
+      100.32% 96.29% at 102.99% -8.84%,
+      rgba(255, 255, 255, 0.94) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    linear-gradient(313deg, rgba(255, 255, 255, 0) 21.76%, #fff 105.16%),
+    linear-gradient(147deg, rgba(186, 227, 255, 0) 82.46%, #dfeeff 144.56%),
+    linear-gradient(268deg, #b5e1ff -8.51%, #f1ebff 95.96%);
+  background-blend-mode: normal, normal, multiply, normal;
+}
+
+@screen lg {
+  .gradient-background {
+    @apply gradient-banner;
+  }
+}
