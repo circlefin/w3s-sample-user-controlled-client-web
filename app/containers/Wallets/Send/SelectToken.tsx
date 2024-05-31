@@ -23,7 +23,6 @@ import {
   TokenCard,
 } from "@/app/components";
 import { useRouter } from "next/navigation";
-import { MegaphoneIcon } from "@heroicons/react/16/solid";
 import { Typography } from "@mui/joy";
 
 interface SelectTokenProps {
