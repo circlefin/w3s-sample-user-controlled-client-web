@@ -15,13 +15,25 @@
 // limitations under the License.
 
 "use client";
-import { CopyButton } from "@/app/components";
+import { CopyButton, useW3sContext } from "@/app/components";
 import { blockchainMeta, getAddressAbbreviation } from "@/app/shared/utils";
-import { IconButton, Tooltip } from "@mui/joy";
-import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/16/solid";
+import {
+  CircularProgress,
+  Dropdown,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  Tooltip,
+} from "@mui/joy";
 import { signOut } from "next-auth/react";
-import { useWallet } from "@/app/axios";
+import { useRestorePinMutation, useWallet } from "@/app/axios";
 import Image from "next/image";
+import {
+  ArrowRightStartOnRectangleIcon,
+  Cog6ToothIcon,
+  EllipsisVerticalIcon,
+} from "@heroicons/react/16/solid";
 
 type WalletLayoutParams = {
   /*
@@ -37,18 +49,40 @@ export default function WalletLayout({
   children: React.ReactNode;
   params: WalletLayoutParams;
 }) {
+  const { client } = useW3sContext();
   const { data: wallet } = useWallet(params.id);
-  const walletAddress = wallet?.data.wallet.address ?? "";
+  const restorePin = useRestorePinMutation();
+
   const blockchainInfo = blockchainMeta(wallet?.data.wallet.blockchain);
+  const walletAddress = wallet?.data.wallet.address ?? "";
+
+  const handleChangePin = async () => {
+    const challengeId = await restorePin.mutateAsync();
+
+    client?.execute(challengeId, (error) => {
+      if (!error) {
+        // handle successful changing of pin.
+        alert("Your pin has successfully been reset");
+      }
+
+      // handle change pin error (e.g. user closed out, bad answers, etc).
+    });
+  };
+
+  const handleSignOut = () =>
+    signOut({
+      redirect: true,
+      callbackUrl: process.env.NEXTAUTH_URL,
+    });
 
   return (
     <>
       {/* Wallet Address */}
-      <div className="flex p-5 justify-between items-center relative gap-x-4">
-        <Tooltip title={blockchainInfo.testnet} placement="bottom-start">
+      <div className='flex p-5 justify-between items-center relative gap-x-4'>
+        <Tooltip title={blockchainInfo.testnet} placement='bottom-start'>
           <IconButton>
             <Image
-              alt="blockchain"
+              alt='blockchain'
               src={blockchainInfo.svg}
               width={20}
               height={20}
@@ -61,22 +95,28 @@ export default function WalletLayout({
           copyLabel={getAddressAbbreviation(walletAddress)}
         />
 
-        <Tooltip title="Sign Out" placement="bottom-end" className="">
-          <IconButton
-            size="sm"
-            onClick={() =>
-              signOut({
-                redirect: true,
-                callbackUrl: process.env.NEXTAUTH_URL,
-              })
-            }
+        <Dropdown>
+          <MenuButton
+            disabled={restorePin.isLoading}
+            variant='plain'
+            className='px-2 text-slate-600'
           >
-            <ArrowRightStartOnRectangleIcon
-              width={24}
-              className="text-blue-600"
-            />
-          </IconButton>
-        </Tooltip>
+            {restorePin.isLoading ? (
+              <CircularProgress color='neutral' />
+            ) : (
+              <EllipsisVerticalIcon className='text-slate-600' height={20} />
+            )}
+          </MenuButton>
+          <Menu placement='bottom-end' size='sm'>
+            <MenuItem onClick={handleChangePin}>
+              <Cog6ToothIcon width={16} /> Change Pin
+            </MenuItem>
+            <MenuItem onClick={handleSignOut}>
+              <ArrowRightStartOnRectangleIcon width={16} />
+              Sign out
+            </MenuItem>
+          </Menu>
+        </Dropdown>
       </div>
       {children}
     </>

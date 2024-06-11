@@ -15,7 +15,7 @@
 // limitations under the License.
 
 "use client";
-import { axios } from "@/app/axios";
+import { restorePinHelper } from "@/app/axios";
 import { W3SSdk } from "@circle-fin/w3s-pw-web-sdk";
 import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -70,11 +70,9 @@ export const W3sProvider: React.FC<W3sProviderProps> = ({ children }) => {
         appId,
       });
       webClient?.setOnForgotPin(async () => {
-        const response = await axios.post<{ challengeId: string }>(
-          "/users/pin/restore",
-        );
-        if (response.data) {
-          webClient.execute(response.data.challengeId);
+        const challengeId = await restorePinHelper();
+        if (challengeId) {
+          webClient.execute(challengeId);
         }
       });
       setClient(webClient);
