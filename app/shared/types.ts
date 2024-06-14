@@ -55,17 +55,17 @@ export type WalletBalancesInput = {
 };
 
 export type WalletsInput = {
-  userId?: string,
-  address: string,
-  blockchain?: string,
-  walletSetId?: string,
-  refId?: string,
-  from?: Date,
-  to?: Date,
-  pageBefore?: string,
-  pageAfter?: string,
-  pageSize?: number,
-}
+  userId?: string;
+  address: string;
+  blockchain?: string;
+  walletSetId?: string;
+  refId?: string;
+  from?: Date;
+  to?: Date;
+  pageBefore?: string;
+  pageAfter?: string;
+  pageSize?: number;
+};
 
 export type Wallet = {
   id: string;
@@ -184,24 +184,29 @@ export const blockchainNames = {
 };
 
 export type EstimateFeeInput = {
-  amount: string[],
-  walletId: string,
-  destinationAddress: string,
-  tokenId: string
-}
+  amount: string[];
+  walletId: string;
+  destinationAddress: string;
+  tokenId: string;
+};
 
 export type GasFeeObject = {
-  gasLimit: string,
-  gasPrice: string,
-  maxFee: string,
-  priorityFee: string
-}
+  gasLimit: string;
+  gasPrice: string;
+  maxFee: string;
+  priorityFee: string;
+};
 
 export type EstimateFeeResponse = {
-  high: GasFeeObject,
-  medium: GasFeeObject,
-  low: GasFeeObject,
-  callGasLimit: string,
-  verificationGasLimit: string,
-  preVerificationGas: string
-}
+  high: GasFeeObject;
+  medium: GasFeeObject;
+  low: GasFeeObject;
+  callGasLimit: string;
+  verificationGasLimit: string;
+  preVerificationGas: string;
+};
+
+export type FaucetDripInput = {
+  address: string;
+  blockchain: string;
+};
