@@ -52,7 +52,7 @@ export const WalletActivity: React.FC<WalletActivityProps> = ({ id }) => {
           src={`/NoActivity.svg`}
           height={80}
           width={80}
-          className='mx-auto mt-4 mb-6'
+          className='mx-auto mt-6 mb-6'
         />
         <Typography
           level='title-lg'

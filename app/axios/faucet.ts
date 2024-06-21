@@ -14,9 +14,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export * from "./axios";
-export * from "./wallets";
-export * from "./transactions";
-export * from "./tokens";
-export * from "./users";
-export * from "./faucet";
+"use client";
+import { axios } from "@/app/axios";
+import { useMutation } from "react-query";
+import { FaucetDripInput } from "../shared/types";
+
+const faucetDripHelper = (input: FaucetDripInput) => {
+  return axios.post(`/faucet/drips`, input);
+};
+
+export const useFaucetDripMutation = () => {
+  return useMutation(faucetDripHelper);
+};

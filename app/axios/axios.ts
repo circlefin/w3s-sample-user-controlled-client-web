@@ -52,6 +52,8 @@ axios.interceptors.response.use(undefined, async (error: unknown) => {
       redirect: true,
     });
   }
+
+  throw error;
 });
 
 export { axios };
