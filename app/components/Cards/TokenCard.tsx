@@ -43,22 +43,22 @@ export const TokenCard: React.FC<TokenCardProps> = ({
       className={`rounded-lg bg-white ${onClick ? "cursor-pointer hover:bg-slate-50 transition-all" : ""}`}
       onClick={onClick}
     >
-      <CardContent className="flex flex-row gap-6">
+      <CardContent className='flex flex-row gap-6'>
         {tokenMeta.svg !== "" ? (
           <Image
-            alt="token"
+            alt='token'
             height={36}
             width={36}
             src={tokenMeta.svg}
-            className="my-auto"
+            className='my-auto'
           />
         ) : (
           <ExclamationCircleIcon width={40} height={40} />
         )}
         <div>
-          <Typography level="body-md">{tokenMeta.name}</Typography>
+          <Typography level='body-md'>{tokenMeta.name}</Typography>
 
-          <Typography level="body-sm">{`${amount} ${tokenMeta.name}`}</Typography>
+          <Typography level='body-sm'>{`${amount} ${tokenMeta.name}`}</Typography>
         </div>
       </CardContent>
     </Card>
