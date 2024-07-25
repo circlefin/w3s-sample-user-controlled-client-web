@@ -70,7 +70,7 @@ export type WalletsInput = {
 export type Wallet = {
   id: string;
   address: string;
-  blockchain: string;
+  blockchain: BlockchainEnum | string;
   createDate: Date;
   custodyType: string;
   accountType?: AccountType;
@@ -161,25 +161,25 @@ export enum CustodyTypeEnum {
 }
 
 export enum BlockchainEnum {
-  ETH_GOERLI = "ETH-GOERLI",
   ETH_SEPOLIA = "ETH-SEPOLIA",
   ETH = "ETH",
   AVAX_FUJI = "AVAX-FUJI",
   AVAX = "AVAX",
-  MATIC_MUMBAI = "MATIC-MUMBAI",
   MATIC_AMOY = "MATIC-AMOY",
   MATIC = "MATIC",
+  SOL_DEVNET = "SOL-DEVNET",
+  SOL = "SOL",
 }
 
-export const blockchainNames = {
-  [BlockchainEnum.ETH_GOERLI]: "Ethereum Goerli",
+export const blockchainNames: Record<BlockchainEnum | string, string> = {
   [BlockchainEnum.ETH_SEPOLIA]: "Ethereum Sepolia",
   [BlockchainEnum.ETH]: "Ethereum",
   [BlockchainEnum.AVAX_FUJI]: "Avalanche Fuji",
   [BlockchainEnum.AVAX]: "Avalanche",
-  [BlockchainEnum.MATIC_MUMBAI]: "Polygon Mumbai",
   [BlockchainEnum.MATIC_AMOY]: "Polygon Amoy",
   [BlockchainEnum.MATIC]: "Polygon",
+  [BlockchainEnum.SOL]: "Solana",
+  [BlockchainEnum.SOL_DEVNET]: "Solana Devnet",
   "": "Unknown blockchain",
 };
 
@@ -193,7 +193,7 @@ export type EstimateFeeInput = {
 export type GasFeeObject = {
   gasLimit: string;
   gasPrice: string;
-  maxFee: string;
+  maxFee?: string;
   priorityFee: string;
 };
 

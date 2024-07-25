@@ -27,13 +27,17 @@ import {
   Tooltip,
 } from "@mui/joy";
 import { signOut } from "next-auth/react";
-import { useRestorePinMutation, useWallet } from "@/app/axios";
+import { useRestorePinMutation, useWallet, useWallets } from "@/app/axios";
 import Image from "next/image";
 import {
   ArrowRightStartOnRectangleIcon,
   Cog6ToothIcon,
   EllipsisVerticalIcon,
+  PlusIcon,
+  QuestionMarkCircleIcon,
 } from "@heroicons/react/16/solid";
+import { useRouter } from "next/navigation";
+import { blockchainNames } from "@/app/shared/types";
 
 type WalletLayoutParams = {
   /*
@@ -49,8 +53,10 @@ export default function WalletLayout({
   children: React.ReactNode;
   params: WalletLayoutParams;
 }) {
+  const router = useRouter();
   const { client } = useW3sContext();
   const { data: wallet } = useWallet(params.id);
+  const { data: wallets } = useWallets();
   const restorePin = useRestorePinMutation();
 
   const blockchainInfo = blockchainMeta(wallet?.data.wallet.blockchain);
@@ -81,12 +87,16 @@ export default function WalletLayout({
       <div className='flex p-5 justify-between items-center relative gap-x-4'>
         <Tooltip title={blockchainInfo.testnet} placement='bottom-start'>
           <IconButton>
-            <Image
-              alt='blockchain'
-              src={blockchainInfo.svg}
-              width={20}
-              height={20}
-            />
+            {blockchainInfo.svg ? (
+              <Image
+                alt='blockchain'
+                src={blockchainInfo.svg}
+                width={20}
+                height={20}
+              />
+            ) : (
+              <QuestionMarkCircleIcon width={20} className='text-gray-400' />
+            )}
           </IconButton>
         </Tooltip>
 
@@ -108,6 +118,33 @@ export default function WalletLayout({
             )}
           </MenuButton>
           <Menu placement='bottom-end' size='sm'>
+            {wallets?.data.wallets.map((wallet) => {
+              // hide currently selected wallet
+              if (wallet.id === params.id) return null;
+              return (
+                <MenuItem
+                  key={wallet.id}
+                  onClick={() => {
+                    router.push(`/wallets/${wallet.id}`);
+                  }}
+                >
+                  <Image
+                    src={blockchainMeta(wallet.blockchain).svg}
+                    alt={`${wallet.blockchain}-icon`}
+                    width={16}
+                    height={16}
+                  />{" "}
+                  {blockchainNames[wallet.blockchain]}
+                </MenuItem>
+              );
+            })}
+            <MenuItem
+              onClick={() => {
+                router.push("/wallets/create");
+              }}
+            >
+              <PlusIcon width={16} /> Create new wallet
+            </MenuItem>
             <MenuItem onClick={handleChangePin}>
               <Cog6ToothIcon width={16} /> Change Pin
             </MenuItem>

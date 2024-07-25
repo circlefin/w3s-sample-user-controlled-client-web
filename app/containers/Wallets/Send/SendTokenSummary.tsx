@@ -18,16 +18,17 @@ import Image from "next/image";
 import { formatDate, tokenHelper } from "@/app/shared/utils";
 import { Button } from "@mui/joy";
 import { Content, CopyButton, useSendTokenContext } from "@/app/components";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { BlockchainEnum, blockchainNames } from "@/app/shared/types";
 import { TextField } from "@/app/components/TextField";
 
 export const SendTokenSummary: React.FC = () => {
   const { tokenName, tokenAndRecipient } = useSendTokenContext();
+  const router = useRouter();
+  const params = useParams();
 
   const imageSymbol = tokenHelper(tokenName);
-  const router = useRouter();
   const date = useMemo(() => new Date(), []);
   return (
     <>
@@ -63,7 +64,7 @@ export const SendTokenSummary: React.FC = () => {
           className='w-full'
           variant='solid'
           onClick={() => {
-            router.push("/wallets");
+            router.push(`/wallets/${params.id}`);
           }}
         >
           Go to home
