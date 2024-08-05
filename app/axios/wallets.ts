@@ -16,8 +16,9 @@
 
 "use client";
 import { axios } from "@/app/axios";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import {
+  BlockchainEnum,
   TokenBalance,
   Wallet,
   WalletBalancesInput,
@@ -26,7 +27,7 @@ import {
 
 const walletBalanceHelper = async (
   id: string,
-  params?: WalletBalancesInput
+  params?: WalletBalancesInput,
 ) => {
   return axios.get<{
     tokenBalances: TokenBalance[];
@@ -72,5 +73,11 @@ export const useWallet = (id: string) => {
   return useQuery({
     queryKey: ["getWallet", id],
     queryFn: () => walletHelper(id),
+  });
+};
+
+export const useCreateWallet = () => {
+  return useMutation((input: { blockchain: BlockchainEnum }) => {
+    return axios.post<string>(`/wallets`, input);
   });
 };

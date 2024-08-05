@@ -16,7 +16,12 @@
 
 import { NextAuthOptions, Session, User } from "next-auth";
 import { axios } from "@/app/axios";
-import { GasFeeObject, Transaction, TransactionStateEnum, TransactionTypeEnum } from "./types";
+import {
+  GasFeeObject,
+  Transaction,
+  TransactionStateEnum,
+  TransactionTypeEnum,
+} from "./types";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const calculateSum = (amounts: string[]): string => {
@@ -25,12 +30,12 @@ export const calculateSum = (amounts: string[]): string => {
 };
 
 export const roundNum = (num: string, decimals: number): string => {
-  return Number(num).toFixed(decimals);;
-}
+  return Number(num).toFixed(decimals);
+};
 
 export const formatDate = (date: Date): string => {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-}
+};
 
 export const findChipColor = (state: TransactionStateEnum) => {
   switch (state) {
@@ -53,7 +58,7 @@ export const findChipColor = (state: TransactionStateEnum) => {
     case TransactionStateEnum.CANCELLED:
       return "neutral";
   }
-}
+};
 
 export const getAddressAbbreviation = (address: string) => {
   return address.slice(0, 6) + "..." + address.slice(-6);
@@ -61,24 +66,11 @@ export const getAddressAbbreviation = (address: string) => {
 
 export const calculateEstimatedFee = (estimatedFee: GasFeeObject): number => {
   return (
-    (parseFloat(estimatedFee.maxFee) + parseFloat(estimatedFee.priorityFee)) *
+    (parseFloat(estimatedFee.maxFee ? estimatedFee.maxFee : "0") +
+      parseFloat(estimatedFee.priorityFee)) *
     parseFloat(estimatedFee.gasLimit) *
     10 ** -9
   );
-};
-
-export const blockchainIcon = (blockchain: string | undefined) => {
-  switch (blockchain) {
-    case "MATIC-AMOY":
-    case "MATIC-MUMBAI":
-      return `/Poly.svg`;
-    case "ETH-SEPOLIA":
-      return `/Eth.svg`;
-    case "AVAX-FUJI":
-      return `/Avax.svg`;
-    default:
-      return "";
-  }
 };
 
 // only testnet blockchains.
@@ -86,21 +78,28 @@ export const blockchainMeta = (blockchain: string | undefined) => {
   switch (blockchain) {
     case "MATIC-AMOY":
       return {
-        svg: `/Poly.svg`,
+        svg: `/Matic.svg`,
         testnet: "Matic Amoy Testnet",
         nativeTokenName: "AmoyMATIC",
-      };
-    case "MATIC-MUMBAI":
-      return {
-        svg: `/Poly.svg`,
-        testnet: "Matic Mumbai Testnet",
-        nativeTokenName: "MumbaiMATIC",
       };
     case "ETH-SEPOLIA":
       return {
         svg: `/Eth.svg`,
         testnet: "Ethereum Sepolia Testnet",
-        nativeTokenName: "SepoliaEth",
+        nativeTokenName: "SepoliaETH",
+      };
+    case "AVAX-FUJI":
+      return {
+        svg: `/Avax.svg`,
+        testnet: "Avalanche Fuji Testnet",
+        nativeTokenName: "FujiAVAX",
+      };
+
+    case "SOL-DEVNET":
+      return {
+        svg: `/Solana.svg`,
+        testnet: "Solana Devnet",
+        nativeTokenName: "DevnetSOL",
       };
     default:
       return {
@@ -116,21 +115,26 @@ export const tokenHelper = (tokenName: string | undefined) => {
     case "Ethereum-Sepolia":
       return {
         svg: `/Eth.svg`,
-        symbol: "ETH",
+        symbol: "ETH-SEPOLIA",
         name: "SepoliaETH",
       };
     case "Polygon-Amoy":
       return {
-        svg: `/Poly.svg`,
+        svg: `/Matic.svg`,
         symbol: "MATIC-AMOY",
         name: "AmoyMATIC",
       };
-    case "Polygon-Mumbai":
-    case "Polygon":
+    case "Avalanche-Fuji":
       return {
-        svg: `/Poly.svg`,
-        symbol: "MATIC-MUMBAI",
-        name: "MumbaiMATIC",
+        svg: `/Avax.svg`,
+        symbol: "AVAX-FUJI",
+        name: "FujiAVAX",
+      };
+    case "Solana-Devnet":
+      return {
+        svg: `/Solana.svg`,
+        symbol: "SOL-DEVNET",
+        name: "DevnetSOL",
       };
     case "USD Coin":
     case "USDC":
@@ -149,7 +153,7 @@ export const tokenHelper = (tokenName: string | undefined) => {
 
 export const getTransactionOperation = (
   walletAddress: string,
-  transaction?: Transaction
+  transaction?: Transaction,
 ) => {
   const isSend =
     transaction?.sourceAddress === walletAddress &&
@@ -160,18 +164,20 @@ export const getTransactionOperation = (
   return { operation, operator };
 };
 
-export const validOnboardStatus = async (session: Session): Promise<boolean> => {
+export const validOnboardStatus = async (
+  session: Session,
+): Promise<boolean> => {
   try {
-    const response = await axios.get<{ 
+    const response = await axios.get<{
       user: {
-        securityQuestionStatus: string, 
-        pinStatus: string 
-      } 
+        securityQuestionStatus: string;
+        pinStatus: string;
+      };
     }>(`/users/${session.user.userId}`);
-  
+
     if (
-      response?.data?.user.pinStatus == 'ENABLED' &&
-      response?.data?.user.securityQuestionStatus == 'ENABLED'
+      response?.data?.user.pinStatus == "ENABLED" &&
+      response?.data?.user.securityQuestionStatus == "ENABLED"
     ) {
       return true;
     }
@@ -179,7 +185,7 @@ export const validOnboardStatus = async (session: Session): Promise<boolean> => 
   } catch (error) {
     return false;
   }
-}
+};
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -257,4 +263,3 @@ export const authOptions: NextAuthOptions = {
   },
   debug: process.env.NODE_ENV !== "production",
 };
-
